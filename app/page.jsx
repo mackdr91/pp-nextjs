@@ -1,7 +1,10 @@
+import Link from "next/link";
+
+
 const HomePage = () => {
-    return ( <div className="text-2xl">
-        <h1>Home</h1>
-        <p>Welcome to the home page</p>
+    return ( <div>
+        <h1>Home Page</h1>
+        <Link href={{pathname: '/properties'}}>Properties</Link>
     </div> );
 }
 
