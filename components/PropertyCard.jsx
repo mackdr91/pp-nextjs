@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { FaBed, FaBath, FaMapMarker, FaMoneyBill, FaRulerCombined } from 'react-icons/fa';
 
 const PropertyCard = ({ property }) => {
