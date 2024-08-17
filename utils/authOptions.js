@@ -27,7 +27,7 @@ export const authOptions = {
         // If it does, return true
         if (!userExists) {
           // Truncate the name
-          const name = profile.name.slice(0,20);
+          const username = profile.name.slice(0,20);
 
           // Create a new user
           await User.create({
