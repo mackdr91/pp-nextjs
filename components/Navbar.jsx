@@ -90,7 +90,7 @@ const Navbar = () => {
                 >
                   Properties
                 </Link>
-                {!session && (
+                {session && (
                   <Link
                     href='/properties/add'
                     className={`${
