@@ -1,13 +1,12 @@
-"use server";
+'use server';
 import connectdb from "@/config/database";
 import Property from "@/models/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
-import { redirect, RedirectType } from "next/navigation";
-import cloudinary from "@/config/cloudinary";
+import { redirect } from "next/navigation";
 
-async function addProperty( formData ) {
 
+async function updateProperty(propertyId, formData) {
     await connectdb();
     const sessionUser = await getSessionUser();
 
@@ -17,13 +16,17 @@ async function addProperty( formData ) {
 
     const { userID } = sessionUser;
 
-    // Access all amenities values and images
-    const amenities = formData.getAll("amenities");
-    const images = formData
-        .getAll("images")
-        .filter((image) => image !== "")
 
+    // Check if the property exists
+    const existingProperty = await Property.findById(propertyId);
+    if (!existingProperty) {
+        throw new Error("Property not found");
+    }
 
+    // Check if the user is the owner
+    if (existingProperty.owner.toString() !== userID) {
+        throw new Error("You do not have permission to update this property");
+    }
 
     const propertyData = {
         type: formData.get("type"),
@@ -38,7 +41,7 @@ async function addProperty( formData ) {
         beds: formData.get("beds"),
         baths: formData.get("baths"),
         square_feet: formData.get("square_feet"),
-        amenities,
+        amenities: formData.getAll("amenities"),
         rates: {
             nightly: formData.get("rates.nightly"),
             weekly: formData.get("rates.weekly"),
@@ -49,33 +52,10 @@ async function addProperty( formData ) {
             email: formData.get("seller_info.email"),
             phone: formData.get("seller_info.phone"),
         },
-
-        owner: userID
-
     };
-
-    const imageUrls = [];
-
-    for (const imageFile of images) {
-        const imageBuffer = await imageFile.arrayBuffer();
-        const imageArray = Array.from(new Uint8Array(imageBuffer));
-        const imageData = Buffer.from(imageArray);
-
-        const imageBase64 = imageData.toString("base64");
-        const result = await cloudinary.uploader.upload(`data:image/jpeg;base64,${imageBase64}`, {
-            folder: 'propertypulse'
-
-        })
-        imageUrls.push(result.secure_url);
-    }
-
-    propertyData.images = imageUrls;
-
-    const newProperty = new Property(propertyData);
-    await newProperty.save();
-
+    const updatedProperty = await Property.findByIdAndUpdate(propertyId, propertyData, { new: true });
     revalidatePath('/', 'layout');
-    redirect(`/properties/${newProperty._id}`);
-
+    redirect(`/properties/${updatedProperty._id}`);
 }
-export default addProperty
+
+export default updateProperty

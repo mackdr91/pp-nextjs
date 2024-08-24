@@ -70,6 +70,8 @@ const PropertyCard = ({ property }) => {
               </div>
             </div>
           </div>
+          
+
      );
 }
 

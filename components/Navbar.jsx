@@ -65,7 +65,7 @@ const Navbar = () => {
           <div className='flex flex-1 items-center justify-center md:items-stretch md:justify-start'>
             {/* <!-- Logo --> */}
             <Link className='flex flex-shrink-0 items-center' href='/'>
-              <Image className='h-10 w-auto' src={logo} alt='PropertyPulse' />
+              <Image className='h-10 w-auto' src={logo} alt='PropertyPulse' priority/>
 
               <span className='hidden md:block text-white text-2xl font-bold ml-2'>
                 PropertyPulse
@@ -192,6 +192,7 @@ const Navbar = () => {
                       role='menuitem'
                       tabIndex='-1'
                       id='user-menu-item-0'
+                      onClick={() => setIsProfileMenuOpen(false)}
                     >
                       Your Profile
                     </Link>
@@ -201,6 +202,7 @@ const Navbar = () => {
                       role='menuitem'
                       tabIndex='-1'
                       id='user-menu-item-2'
+                      onClick={() => setIsProfileMenuOpen(false)}
                     >
                       Saved Properties
                     </Link>
