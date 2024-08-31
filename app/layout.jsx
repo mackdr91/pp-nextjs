@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import AuthProvider from '@/components/AuthProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GlobalProvider } from '@/context/GlobalContext';
 
 export const metadata = {
     title: 'PP NextJS',
@@ -14,6 +15,7 @@ export const metadata = {
 const MainLayout = ({ children }) => {
     return (
     <AuthProvider>
+    <GlobalProvider>
     <html>
         <body>
             <main>
@@ -24,6 +26,7 @@ const MainLayout = ({ children }) => {
             <ToastContainer />
         </body>
     </html>
+    </GlobalProvider>
     </AuthProvider> );
 }
 
