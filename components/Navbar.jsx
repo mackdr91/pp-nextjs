@@ -256,7 +256,7 @@ const Navbar = () => {
                 Add Property
               </Link>
             )}
-            {!session && (
+            {session && (
             <div className='hidden md:block md:ml-6'>
               <div className='flex items-center'>
                 {providers &&
